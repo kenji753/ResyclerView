@@ -2,6 +2,7 @@ package com.example.recyclerview
 
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ class Adapter(private val context: Context, private val memoList: List<Memo>) :
         val dateTextView: TextView = view.findViewById(R.id.date)
         val contentPictureView: ImageView = view.findViewById(R.id.contentPicture)
         val _tagTextView: TextView = view.findViewById(R.id._tag)
+        val heartView: ImageView = view.findViewById(R.id.heart)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder =
@@ -32,5 +34,13 @@ class Adapter(private val context: Context, private val memoList: List<Memo>) :
         holder.dateTextView.text = memoList[position].date
         holder.contentTextView.text = memoList[position].content
         holder.contentPictureView.setImageResource(R.color.colorPrimary)
+        holder.heartView.setImageResource(R.mipmap.heart1)
+        holder.heartView.setOnClickListener {
+           // Log.d("Tag no ID ",holder.heartView.getTag().toString())
+                holder.heartView.setImageResource(R.mipmap.heart2)
+            //else
+                //holder.heartView.setImageResource(R.mipmap.heart1)
+        }
     }
+
 }
