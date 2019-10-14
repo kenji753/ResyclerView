@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         //テストデータの生成
         val date = "1hour"
         val memoList = mutableListOf<Memo>()
-        repeat((0..100).count()) { memoList.add(Memo("ユーザー名", "1 hours ago")) }
+        repeat((0..100).count()) { memoList.add(Memo("ユーザー名","テキストてきすとテキストてきすとテキストてきすとテキストてきすと" ,"1 hours ago")) }
 
         //RecyclerViewにAdapterとLayoutManagerを設定
         findViewById<RecyclerView>(R.id.testRecyclerView).also { recyclerView: RecyclerView ->
