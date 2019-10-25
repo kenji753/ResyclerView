@@ -1,0 +1,28 @@
+{
+  "storeID": [
+ {
+   "ID":1,
+   "store":{
+   "name": "まつく",
+   "businesshours": "9:00-16:00",
+   "picture": "a.png"
+   },
+   "post":{
+     "likecount": 10,
+     "likestate": true
+   }
+ },
+ {
+   "ID":2,
+   "store":{
+   "name": "mosu",
+   "businesshours": "9:00-16:00",
+   "picture": "b.png"
+   },
+   "post":{
+     "likecount": 5,
+     "likestate": false 
+   }
+ }
+ ]
+}

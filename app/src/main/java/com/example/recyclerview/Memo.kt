@@ -1,4 +1,4 @@
 package com.example.recyclerview
 
 
-data class Memo(val username: String, val content: String, val date: String)
+data class Data(val username: String, val content: String, val date: String, var heartCount: Int, var heartState: Boolean)

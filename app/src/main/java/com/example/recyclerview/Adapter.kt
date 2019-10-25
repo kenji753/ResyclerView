@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class Adapter(private val context: Context, private val memoList: List<Memo>) :
+class Adapter(private val context: Context, private val dataList: List<Data>) :
     RecyclerView.Adapter<Adapter.ListViewHolder>() {
 
     class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -23,28 +23,46 @@ class Adapter(private val context: Context, private val memoList: List<Memo>) :
         val _tagTextView: TextView = view.findViewById(R.id._tag)
         val heartView: ImageView = view.findViewById(R.id.heart)
         var LikeNum: TextView = view.findViewById(R.id.likeCount)
-        var countLike: Int = 0
+        //var countLike: Int = 0
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder =
         ListViewHolder(LayoutInflater.from(context).inflate(R.layout.list_timeline, parent, false))
 
-    override fun getItemCount(): Int = memoList.size
+    override fun getItemCount(): Int = dataList.size
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         holder.userIconImageView.setImageResource(R.mipmap.ic_launcher_round)
-        holder.userNameTextView.text = memoList[position].username
-        holder.dateTextView.text = memoList[position].date
-        holder.contentTextView.text = memoList[position].content
+        holder.userNameTextView.text = dataList[position].username
+        holder.dateTextView.text = dataList[position].date
+        holder.contentTextView.text = dataList[position].content
         holder.contentPictureView.setImageResource(R.color.colorPrimary)
-        holder.heartView.setImageResource(R.mipmap.heart1)
-        holder.LikeNum.text="0"
-        holder.heartView.setOnClickListener {
+        holder.LikeNum.text=dataList[position].heartCount.toString()
+        //holder.heartView.setImageResource(R.mipmap.heart1)
+        if(dataList[position].heartState)
             holder.heartView.setImageResource(R.mipmap.heart2)
-            holder.countLike++
+        else
+            holder.heartView.setImageResource(R.mipmap.heart1)
 
-            holder.LikeNum.text=holder.countLike.toString()
+        holder.heartView.setOnClickListener {
+            if(!dataList[position].heartState)
+            {
+                dataList[position].heartState = true
+                dataList[position].heartCount++
+                holder.heartView.setImageResource(R.mipmap.heart2)
+                holder.LikeNum.text=dataList[position].heartCount.toString()
+
+            }
+            else
+            {
+                dataList[position].heartState = false
+                dataList[position].heartCount--
+                holder.heartView.setImageResource(R.mipmap.heart1)
+                holder.LikeNum.text=dataList[position].heartCount.toString()
+            }
         }
+
+
 
 
     }
