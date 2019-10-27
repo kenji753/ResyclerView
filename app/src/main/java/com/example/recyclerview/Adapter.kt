@@ -67,4 +67,6 @@ class Adapter(private val context: Context, private val dataList: List<Data>) :
 
     }
 
+
+
 }
