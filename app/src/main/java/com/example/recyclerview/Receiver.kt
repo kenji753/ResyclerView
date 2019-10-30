@@ -1,3 +1,4 @@
+/*
 package com.example.recyclerview
 
 import android.os.AsyncTask
@@ -16,6 +17,7 @@ import java.net.URL
 //doInBackgroundメソッドの引数の型, onProgressUpdateメソッドの引数の型, onPostExecuteメソッドの戻り値の型
 class Receiver : AsyncTask<String, String, String>() {
     override fun doInBackground(vararg params: String?): String {
+        android.os.Debug.waitForDebugger();
         val id =params[0]
         //URLの尻に都市IDくっつける
         val urlStr = "https://jsondata.okiba.me/v1/json/s0oFo191027144849"
@@ -27,7 +29,10 @@ class Receiver : AsyncTask<String, String, String>() {
         con.requestMethod = "GET"
         //接続
         con.connect()
-        //接続エラーの処理書く
+        //接続エラーの理書く
+
+        val res = con.responseCode
+        Log.d("result", res.toString())
 
         //HttpURLConnectionオブジェクトからレスポンスデータ取得。天気情報が格納されとる
         val stream  = con.inputStream
@@ -45,42 +50,19 @@ class Receiver : AsyncTask<String, String, String>() {
 
         //JSON文字列からJSONObjectを生成。
         val rootJSON = JSONObject(result)
-        //[]、配列をよみとる
+        //getJSONArrayで [],配列をよみとる
         val StoreIDJSON = rootJSON.getJSONArray("storeID")
         val Sdata = StoreIDJSON.getJSONObject(0)
-        val storeName = Sdata.getString("name")
-        val storePicture = Sdata.getString("picture")
+        val storeData = Sdata.getJSONObject("store")
+        val storeName = storeData.getString("name")
+        val storePicture = storeData.getString("picture")
         val PostData = Sdata.getJSONObject("post")
         val contentData = PostData.getString("content")
         val likeCount = PostData.getString("likeCount").toInt()
         val likeState = PostData.getString("likeState").toBoolean()
 
-
-        Data(storeName,contentData,storePicture,likeCount,likeState)
-        /*
-
-
-        val desc  = descriptionJSON.getString("text")
-        //更新時間
-        val time  = descriptionJSON.getString("publicTime")
-        Log.d("時間", time)
-
-        //ルートJSON直下の「forecasts」JSON配列を取得
-        val forecasts = rootJSON.getJSONArray("forecasts")
-        val forecastNow = forecasts.getJSONObject(0)
-        //天気取得
-        val telop = forecastNow.getString("telop")
-
-        val pushtime = "更新時間：" + time
-        */
-
-        //天気情報文字列をTextviewにいれる
-       //kokoni teki touna hairetu
-        //oite watrasu
-
-
-
-
+        val dataList = mutableListOf<Data>()
+        dataList.add(Data(storeName,contentData,storePicture,likeCount,likeState))
 
     }
 
@@ -97,3 +79,5 @@ class Receiver : AsyncTask<String, String, String>() {
         return sb.toString()
     }
 }
+
+*/
