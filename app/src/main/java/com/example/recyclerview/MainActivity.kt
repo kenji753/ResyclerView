@@ -8,6 +8,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -16,17 +22,60 @@ import java.io.InputStreamReader
 import java.lang.StringBuilder
 import java.net.HttpURLConnection
 import java.net.URL
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.create
+import java.sql.ClientInfoStatus
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
-    private var dataList = mutableListOf<Data>()
-    private var dataList2 = mutableListOf<Data>()
+
+    private val retrofit: Retrofit by lazy {createRetrofit()}
+    private val client: CLient by lazy { retrofit.create(CLient::class.java) }
+
+    private lateinit var adapter: ListAdapter
+    private lateinit var recyclerView: RecyclerView
+
+    private val disposable = CompositeDisposable()
+
+    //private var dataList: MutableList<Data> = mutableListOf<Data>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setUpView()
+        requestItem()
+        adapter.articles.add(Data("ユーザー名","テキストてきすとテキストてきすとテキストてきすとテキストてきすと" ,"1 hours ago", 2, true))
 
 
+    }
+
+    private fun setUpView() {
+        recyclerView = findViewById(R.id.testRecyclerView)
+        adapter = ListAdapter(this)
+        recyclerView.adapter = adapter
+    }
+
+    private fun requestItem() {
+        client.search("Kotlin")
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ data ->
+                adapter.run {
+                    articles = data
+                    notifyDataSetChanged()
+                }
+            }) {
+                Log.e(MainActivity::class.java.simpleName, it.toString())
+            }.addTo(disposable)
+    }
+
+    /*
+
+       // ARepository.
 
         var storeID = "1"
 
@@ -43,9 +92,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        b2.setOnClickListener {
-            storeID = "2"
-            dataList.add(Data("ユーザー名","テキストてきすとテキストてきすとテキストてきすとテキストてきすと" ,"1 hours ago", 2, true))
+            b2.setOnClickListener {
+             storeID = "2"
+             dataList.add(Data("ユーザー名","テキストてきすとテキストてきすとテキストてきすとテキストてきすと" ,"1 hours ago", 2, true))
 
             //receiver.execute(storeID)
 
@@ -150,9 +199,40 @@ class MainActivity : AppCompatActivity() {
             reader.close()
             return sb.toString()
         }
+
+
     }
 
+     */
 
+    // retrofit(APIを叩くライブラリ)のインスタンス生成
+    private fun createRetrofit(): Retrofit {
+        val moshi = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+        val okHttpClient = OkHttpClient()
+            .newBuilder()
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .build()
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .baseUrl(BASE_URL)
+            .build()
+    }
+
+    // メモリリーク対策
+    override fun onDestroy() {
+        disposable.clear()
+        super.onDestroy()
+    }
+
+    companion object {
+        private const val BASE_URL = "https://qiita.com"
+    }
 
 
 }
