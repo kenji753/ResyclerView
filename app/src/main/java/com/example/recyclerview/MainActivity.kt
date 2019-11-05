@@ -1,11 +1,8 @@
 package com.example.recyclerview
 
-import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.moshi.Moshi
@@ -14,27 +11,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.lang.StringBuilder
-import java.net.HttpURLConnection
-import java.net.URL
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
-import java.sql.ClientInfoStatus
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
 
-    private val retrofit: Retrofit by lazy {createRetrofit()}
-    private val client: CLient by lazy { retrofit.create(CLient::class.java) }
+    private val retrofit: Retrofit by lazy { createRetrofit() }
+    private val sampleClient: SampleClient by lazy { retrofit.create(SampleClient::class.java) }
 
     private lateinit var adapter: ListAdapter
     private lateinit var recyclerView: RecyclerView
@@ -48,24 +35,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setUpView()
         requestItem()
-        adapter.articles.add(Data("ユーザー名","テキストてきすとテキストてきすとテキストてきすとテキストてきすと" ,"1 hours ago", 2, true))
-
-
     }
 
     private fun setUpView() {
         recyclerView = findViewById(R.id.testRecyclerView)
         adapter = ListAdapter(this)
-        recyclerView.adapter = adapter
+        recyclerView.apply {
+            val manager = LinearLayoutManager(this@MainActivity)
+            layoutManager = manager
+            adapter = this@MainActivity.adapter
+        }
     }
 
     private fun requestItem() {
-        client.search("Kotlin")
+        sampleClient.getSample()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ data ->
+                Log.d("aaa", data.toString())
                 adapter.run {
-                    articles = data
+                    // アダプターにデータ追加
+                    stores.addAll(data.storeID)
+                    // データ追加後はnotifyDataSetChangedとかを呼ばないと変更されない
                     notifyDataSetChanged()
                 }
             }) {
@@ -231,7 +222,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val BASE_URL = "https://qiita.com"
+        private const val BASE_URL = "https://jsondata.okiba.me"
     }
 
 
