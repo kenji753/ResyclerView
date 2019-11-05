@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ data ->
-                Log.d("aaa", data.toString())
                 adapter.run {
                     // アダプターにデータ追加
                     stores.addAll(data.storeID)
