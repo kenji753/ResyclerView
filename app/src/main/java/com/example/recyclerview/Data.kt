@@ -1,5 +1,6 @@
 package com.example.recyclerview
 
+//参照するJSONDataに合わせて形式、変数全て揃える必要がある
 data class Data(
     val storeID: List<StoreID>
 ) {

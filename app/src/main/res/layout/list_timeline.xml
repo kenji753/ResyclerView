@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingBottom="16dp">
 
     <ImageView
@@ -20,10 +19,11 @@
 
     <ImageView
         android:id="@+id/contentPicture"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="316dp"
+        android:layout_height="185dp"
+        android:layout_marginStart="48dp"
 
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userIcon"
         tools:src="@color/colorPrimaryDark" />
 
@@ -42,24 +42,27 @@
         android:layout_height="0dp"
         android:text="〇 xx hours ago"
         android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/content" />
 
     <TextView
         android:id="@+id/content"
-        android:layout_width="300dp"
-        android:layout_height="0dp"
+        android:layout_width="246dp"
+        android:layout_height="37dp"
         android:layout_below="@+id/userName"
+        android:layout_marginTop="19dp"
         android:text="今日のご飯は、カレーライス、とんかつ、寿司、チャーハン、カレーライス！"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/contentPicture"
-        app:layout_constraintTop_toBottomOf="@+id/_tag" />
+        app:layout_constraintTop_toBottomOf="@+id/contentPicture" />
 
     <TextView
         android:id="@+id/_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="#Tag"
+        app:layout_constraintEnd_toStartOf="@+id/content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contentPicture" />
 
@@ -76,8 +79,7 @@
         android:id="@+id/heart"
         android:layout_width="64px"
         android:layout_height="64px"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.091"
+        android:layout_marginTop="36dp"
         app:layout_constraintStart_toEndOf="@+id/content"
         app:layout_constraintTop_toBottomOf="@+id/content"
         app:srcCompat="@mipmap/heart1" />

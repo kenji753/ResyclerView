@@ -7,6 +7,6 @@ import retrofit2.http.GET
 interface SampleClient {
 
     // APIのエンドポイントごとにメソッドを定義する
-    @GET("/v1/json/s0oFo191027144849")
+    @GET("/v1/json/jfARj191105130858")
     fun getSample(): Observable<Data>
 }
