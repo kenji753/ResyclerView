@@ -1,0 +1,28 @@
+{
+  "storeID": [
+ {
+   "store":{
+   "name": "まつく",
+   "businessHours": "9:00-16:00",
+   "picture": "a.png"
+   },
+   "post":{
+     "content": "ココ！トテモ！オイシイヨ！！！",
+     "likeCount": 10,
+     "likeState": true
+   }
+ },
+ {
+   "store":{
+   "content": "ｓだこｓｄこあｋそｄこあｋｓｄっｋそｋぞｋそｄｋくぉｋｗっｑうぇｄこｄこあｋどかおｋそｋｄｗｋくぉｄｗこｑｋどｑｋどこｑｄくぉｄこｋｑｗどｑｗｄ",
+   "name": "もっす",
+   "businessHours": "9:00-16:00",
+   "picture": "b.png"
+   },
+   "post":{
+     "likeCount": 5,
+     "likeState": false
+   }
+ }
+ ]
+}
